@@ -1,23 +1,18 @@
-
-12
-:
-15
-
-Selected Voice
-1x
 <!doctype html>
 <html>
 
 <head>
     <meta charset="utf-8" />
-
     <title>Un ramo para ti</title>
+
     <style>
         body {
             height: 100%;
             width: 100%;
             background: #080f1a;
             overflow: hidden;
+            margin: 0;
+            padding: 0;
         }
 
         .container {
@@ -32,6 +27,7 @@ Selected Voice
             width: 600px;
             background: #122139;
             border-radius: 300px 300px 0px 0px;
+            position: relative;
         }
 
         .glass:before {
@@ -362,47 +358,45 @@ Selected Voice
             position: absolute;
             left: 10%;
         }
-    </style>
-</head>
 
-<body>
-    <div class="container">
-        <div class="glass">
-            <div class="shine"></div>
-        </div>
-        <div class="thorns">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <div class="leaves">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <div class="petals">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <div class="deadPetals">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>
-    <div>
-        <h4 class="texto">Mi amor por ti durará hasta que caiga el último pétalo ❤️</h>
-    </div>
-</body>
+        /* ------------------------------------- */
+        /*               RESPONSIVE              */
+        /* ------------------------------------- */
+        @media (max-width: 600px) {
 
-</html>
+            .container {
+                transform: translate(-50%, -40%) scale(0.55);
+                top: 40%;
+            }
+
+            .glass {
+                width: 300px;
+                height: 450px;
+                border-radius: 150px 150px 0 0;
+            }
+
+            .glass:after {
+                width: 300px;
+                height: 10px;
+            }
+
+            .glass:before {
+                left: 130px;
+                top: -40px;
+                width: 25px;
+                height: 25px;
+                border-width: 12px;
+            }
+
+            .texto {
+                font-size: 22px;
+                left: 5%;
+                top: 75%;
+                width: 90%;
+                text-align: center;
+            }
+
+            .petals > div,
+
 
 
