@@ -1,55 +1,52 @@
 <!doctype html>
-<html>
+<html lang="es">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Un ramo para ti</title>
     <style>
-        /* 1. ESTILOS BASE Y ESCALADO */
+        /* === 1. ESTRUCTURA PRINCIPAL (FONDO Y CENTRADO) === */
         body {
-            /* Aseguramos que ocupe toda la pantalla */
-            height: 100vh; 
-            width: 100vw;
             background: #080f1a;
+            height: 100vh;
+            width: 100vw;
             overflow: hidden;
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
         }
 
-        /* Contenedor que forzará el escalado de toda la escena */
-        .scene-wrapper {
-            /* Se establece el tamaño base del diseño original */
-            width: 600px;
-            height: 850px; /* Un poco más de 800px para incluir el texto */
+        /* === 2. EL LIENZO (WRAPPER) QUE CONTIENE TODO === */
+        /* Este contenedor mantiene las proporciones originales (600x800) */
+        .flower-wrapper {
             position: relative;
-            /* La magia: Escala toda la escena para que quepa */
-            transform-origin: top center;
-            transform: scale(var(--scale, 1));
+            width: 600px;
+            height: 800px;
+            /* Por defecto (PC) escala a 1 (tamaño real) */
+            transform: scale(1);
+            transform-origin: center center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* 2. MEDIA QUERY PARA RESPONSIVIDAD (Escala en móvil) */
+        /* === 3. MAGIA RESPONSIVE (SOLO PARA MÓVIL) === */
+        /* Si la pantalla es menor a 650px (Celulares), escalamos todo al 55% */
         @media (max-width: 650px) {
-            .scene-wrapper {
-                /* Calcula el factor de escala basado en el ancho de la pantalla */
-                --scale: calc(100vw / 600); 
-            }
-            /* Ajustamos la altura del body para que se vea todo al escalar */
-            body {
-                height: auto;
-                min-height: 100vh;
+            .flower-wrapper {
+                transform: scale(0.55);
             }
         }
 
-        /* 3. CÓDIGO ORIGINAL (A partir de aquí, es tu código con ajustes menores) */
+        /* === 4. ESTILOS DE LA FLOR (CÓDIGO ORIGINAL LIMPIO) === */
+        
+        /* Ajustamos el container para que esté centrado en nuestro wrapper */
         .container {
-            /* Posición central dentro del contenedor de 600px */
             position: absolute;
             left: 50%;
-            top: 30%;
+            top: 40%; /* Subimos un poco la flor para dar espacio al texto */
             transform: translate(-50%, -50%);
         }
 
@@ -199,6 +196,7 @@
             animation-fill-mode: forwards;
         }
 
+        /* === CORRECCIÓN DE CRASHEO (Valores seguros) === */
         .deadPetals>div {
             position: absolute;
             background: #d52d58;
@@ -210,7 +208,7 @@
             transition: all 0.5s ease-out;
         }
 
-        /* Corregimos las coordenadas absurdas y las reemplazamos por un inicio fuera de la vista (para que la animación funcione) */
+        /* Se cambian los billones de pixeles por -100px (fuera de pantalla, pero seguro) */
         .deadPetals>div:nth-child(1) {
             left: -100px; 
             transform: rotate(-30deg);
@@ -218,19 +216,19 @@
         }
 
         .deadPetals>div:nth-child(2) {
-            left: -150px;
+            left: -100px;
             transform: rotate(-30deg);
             animation: falling 20s 8s ease-in-out infinite;
         }
 
         .deadPetals>div:nth-child(3) {
-            left: -200px;
+            left: -100px;
             transform: rotate(-30deg);
             animation: falling 20s 12s ease-in-out infinite;
         }
 
         .deadPetals>div:nth-child(4) {
-            left: -250px;
+            left: -100px;
             transform: rotate(-30deg);
             animation: falling 20s 16s ease-in-out infinite;
         }
@@ -316,6 +314,7 @@
             top: 525px;
         }
 
+        /* === ANIMACIONES === */
         @keyframes bloom2 {
             50% {
                 transform: rotate(-90deg);
@@ -332,35 +331,11 @@
             }
         }
 
-        @keyframes bloom3 {
-            100% {
-                transform: rotate(50deg);
-            }
-        }
-
-        @keyframes bloom4 {
-            100% {
-                transform: rotate(-25deg);
-            }
-        }
-
-        @keyframes bloom5 {
-            100% {
-                transform: rotate(25deg);
-            }
-        }
-
-        @keyframes bloom6 {
-            100% {
-                transform: rotate(-10deg);
-            }
-        }
-
-        @keyframes bloom7 {
-            100% {
-                transform: rotate(10deg);
-            }
-        }
+        @keyframes bloom3 { 100% { transform: rotate(50deg); } }
+        @keyframes bloom4 { 100% { transform: rotate(-25deg); } }
+        @keyframes bloom5 { 100% { transform: rotate(25deg); } }
+        @keyframes bloom6 { 100% { transform: rotate(-10deg); } }
+        @keyframes bloom7 { 100% { transform: rotate(10deg); } }
 
         @keyframes glowing {
             50% {
@@ -383,19 +358,22 @@
         }
 
         .texto {
-            /* Ajustamos la posición relativa al contenedor y centramos */
-            position: relative; 
-            top: 800px; /* Posicionado debajo del jarrón */
-            color: white;
-            font-size: 35px;
+            position: absolute;
+            bottom: 100px; /* Ajustado para que se vea debajo del jarrón */
             width: 100%;
             text-align: center;
+            color: white;
+            font-size: 35px;
+            font-family: sans-serif; /* Fuente legible */
+            z-index: 20;
         }
     </style>
 </head>
 
 <body>
-    <div class="scene-wrapper">
+    
+    <div class="flower-wrapper">
+        
         <div class="container">
             <div class="glass">
                 <div class="shine"></div>
@@ -428,9 +406,12 @@
                 <div></div>
             </div>
         </div>
-        <div>
-            <h4 class="texto">Mi amor por ti durará hasta que caiga el último pétalo ❤️</h4>
+
+        <div class="texto">
+            <p>Mi amor por ti durará hasta que caiga el último pétalo ❤️</p>
         </div>
+
     </div>
+
 </body>
 </html>
