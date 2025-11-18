@@ -1,20 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Sunflower Pattern</title>
+<meta charset="UTF-8" />
+<title>Animated Math Flower</title>
 <style>
     body {
         margin: 0;
-        background: black;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+        background: #000;
+        overflow: hidden;
     }
 </style>
 </head>
-
 <body>
 <canvas id="canvas"></canvas>
 
@@ -22,62 +18,85 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-// Fullscreen canvas
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const cx = canvas.width / 2;
 const cy = canvas.height / 2;
 
-// ------------------------------
-// 1. PATRÓN DECORATIVO
-// ------------------------------
-ctx.strokeStyle = "#FFFFFF";
-ctx.lineWidth = 1;
+// -----------------------------
+// ANIMACIÓN: CONTROL DE FRAMES
+// -----------------------------
+let frame = 0;
 
-for (let i = 0; i < 16; i++) {
-    for (let j = 0; j < 18; j++) {
-        const radius = 150 - j * 6;
+// -----------------------------
+// 1. DIBUJAR PÉTALOS ANIMADOS
+// -----------------------------
+function drawPetals(step) {
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 1;
 
-        // Semicírculo derecho
-        ctx.beginPath();
-        ctx.arc(cx, cy - 40, radius, Math.PI * 1.5, Math.PI / 2);
-        ctx.stroke();
+    let total = 16 * 18;
+    let count = 0;
 
-        // Semicírculo izquierdo
-        ctx.beginPath();
-        ctx.arc(cx, cy - 40, radius, Math.PI / 2, Math.PI * 1.5);
-        ctx.stroke();
+    for (let i = 0; i < 16; i++) {
+        for (let j = 0; j < 18; j++) {
+
+            if (count > step) return;
+            count++;
+
+            const radius = 150 - j * 6;
+
+            ctx.beginPath();
+            ctx.arc(cx, cy - 40, radius, Math.PI * 1.5, Math.PI / 2);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(cx, cy - 40, radius, Math.PI / 2, Math.PI * 1.5);
+            ctx.stroke();
+        }
     }
 }
 
-// ------------------------------
-// 2. ESPIRAL TIPO GIRASOL
-// ------------------------------
-const goldenAngle = 137.508 * (Math.PI / 180);
-ctx.fillStyle = "#FFA216";
+// -----------------------------
+// 2. DIBUJAR ESPIRAL GIRASOL ANIMADA
+// -----------------------------
+function drawSeeds(step) {
+    const goldenAngle = 137.508 * (Math.PI / 180);
 
-for (let i = 0; i < 140; i++) {
-    let r = 4 * Math.sqrt(i);
-    let theta = i * goldenAngle;
+    ctx.fillStyle = "#FFA216";
 
-    let x = cx + r * Math.cos(theta);
-    let y = cy + r * Math.sin(theta);
+    for (let i = 0; i < step; i++) {
+        let r = 4 * Math.sqrt(i);
+        let theta = i * goldenAngle;
 
-    ctx.beginPath();
-    ctx.arc(x, y, 6, 0, Math.PI * 2);
-    ctx.fill();
+        let x = cx + r * Math.cos(theta);
+        let y = cy + r * Math.sin(theta);
+
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.fill();
+    }
 }
 
-// ------------------------------
-// 3. TEXTO PERSONALIZADO
-// ------------------------------
-ctx.fillStyle = "#FFA216";
-ctx.font = "bold 48px Arial";
-ctx.textAlign = "center";
-ctx.fillText("Te amo Isa", cx, cy + 20);
+// -----------------------------
+// LOOP PRINCIPAL
+// -----------------------------
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    const petalsStep = Math.min(frame, 16 * 18);
+    const seedsStep = Math.max(0, frame - 150);
+
+    drawPetals(petalsStep);
+    drawSeeds(seedsStep);
+
+    frame += 2; // velocidad
+
+    requestAnimationFrame(animate);
+}
+
+animate();
 </script>
-
 </body>
 </html>
