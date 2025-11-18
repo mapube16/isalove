@@ -6,211 +6,401 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Un ramo para ti</title>
     <style>
-        /* BASE Y CENTRADO */
+        /* 1. ESTILOS BASE Y ESCALADO */
         body {
-            height: 100vh;
+            /* Aseguramos que ocupe toda la pantalla */
+            height: 100vh; 
             width: 100vw;
             background: #080f1a;
             overflow: hidden;
             margin: 0;
-            display: flex; /* <-- Usamos Flexbox para centrar todo */
+            display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
         }
 
-        /* Contenedor principal de la flor y jarrón */
-        .container {
-            position: relative; /* Es clave para que los hijos se posicionen dentro */
-            width: 80vw; /* Ocupa el 80% del ancho del viewport */
-            max-width: 600px; /* Limita el tamaño máximo */
-            margin-top: -15vh; /* Mueve la flor hacia arriba en la pantalla */
+        /* Contenedor que forzará el escalado de toda la escena */
+        .scene-wrapper {
+            /* Se establece el tamaño base del diseño original */
+            width: 600px;
+            height: 850px; /* Un poco más de 800px para incluir el texto */
+            position: relative;
+            /* La magia: Escala toda la escena para que quepa */
+            transform-origin: top center;
+            transform: scale(var(--scale, 1));
         }
 
-        /* JARRÓN (GLASS) - Escalable en porcentajes */
-        .glass {
-            width: 100%;
-            padding-bottom: 133%; /* Técnica para mantener la proporción (4:3) */
-            max-height: 800px;
-            background: #122139;
-            border-radius: 50% 50% 0px 0px;
+        /* 2. MEDIA QUERY PARA RESPONSIVIDAD (Escala en móvil) */
+        @media (max-width: 650px) {
+            .scene-wrapper {
+                /* Calcula el factor de escala basado en el ancho de la pantalla */
+                --scale: calc(100vw / 600); 
+            }
+            /* Ajustamos la altura del body para que se vea todo al escalar */
+            body {
+                height: auto;
+                min-height: 100vh;
+            }
+        }
+
+        /* 3. CÓDIGO ORIGINAL (A partir de aquí, es tu código con ajustes menores) */
+        .container {
+            /* Posición central dentro del contenedor de 600px */
             position: absolute;
-            left: 0;
-            top: 0;
+            left: 50%;
+            top: 30%;
+            transform: translate(-50%, -50%);
+        }
+
+        .glass {
+            height: 800px;
+            width: 600px;
+            background: #122139;
+            border-radius: 300px 300px 0px 0px;
         }
 
         .glass:before {
             content: "";
-            width: 5%;
-            padding-bottom: 5%;
-            border: 3vw solid #122139;
+            height: 40px;
+            width: 40px;
+            transform-origin: center;
+            border: 25px solid #122139;
             border-radius: 100%;
             position: absolute;
-            left: 50%;
-            top: -10%;
-            transform: translateX(-50%);
+            left: 256px;
+            top: -74px;
         }
 
         .glass:after {
             content: "";
             position: absolute;
             height: 15px;
-            width: 100%;
+            width: 600px;
             background: #a52a2a;
-            bottom: -15px;
+            top: 100%;
             left: 0%;
         }
 
         .shine {
-            width: 4%;
-            height: 40%;
+            width: 26px;
+            height: 330px;
             background: white;
             opacity: 0.2;
             position: absolute;
             left: 85%;
-            top: 25%;
+            top: 200px;
             border-radius: 100px;
             z-index: 10;
         }
 
         .shine:before {
             content: "";
-            width: 100%;
-            height: 10%;
+            width: 26px;
+            height: 40px;
             position: absolute;
             background: white;
-            top: 110%;
+            top: 365px;
             border-radius: 100px;
-        }
-
-        /* PETALOS Y HOJAS: Posicionados relativamente */
-
-        /* Envuelve los elementos de la flor en una capa para posicionarlos sobre el jarrón */
-        .flower-parts {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
         }
 
         .petals>div {
             position: absolute;
             background: #d52d58;
-            width: 14%; 
-            height: 20%; 
-            /* Posiciones base de la flor (cálculos centrados para el 100% de width) */
-            top: 30%; 
-            left: 43%; 
+            width: 85px;
+            height: 120px;
+            top: 200px;
             transition: all 0.5s ease-out;
         }
 
-        /* Pétalo central */
         .petals>div:nth-child(1) {
             border-radius: 15px;
             box-shadow: 0px 0px 60px rgba(245, 148, 184, 1);
+            left: 268px;
+            top: 200px;
             background: #d52d58;
         }
 
-        /* Pétalos laterales (ajustando left para que sigan centrados) */
         .petals>div:nth-child(2),
         .petals>div:nth-child(4),
         .petals>div:nth-child(6) {
             background: #b81b43;
-            left: 37%; /* Mover a la izquierda desde el centro */
+            left: 230px;
             border-radius: 0px 50px 0px 50px;
             transform-origin: bottom right;
         }
+
         .petals>div:nth-child(3),
         .petals>div:nth-child(5),
         .petals>div:nth-child(7) {
             background: #b81b43;
-            left: 50%; /* Mover a la derecha desde el centro */
+            left: 300px;
             border-radius: 50px 0px 50px 0px;
             transform-origin: bottom left;
         }
 
-        /* Tallo y hojas */
-        .leaves>div:nth-child(1) { /* Tallo principal */
+        .petals>div:nth-child(2) {
+            z-index: 5;
+            background: #ab1a3f;
+            top: 218px;
+            height: 130px;
+            box-shadow: 0px 0px 60px rgba(245, 148, 184, .5);
+            animation: bloom2 3s ease-in-out;
+            animation-fill-mode: forwards;
+        }
+
+        .petals>div:nth-child(3) {
+            z-index: 4;
+            background: #ab1a3f;
+            top: 218px;
+            height: 130px;
+            box-shadow: 0px 0px 60px rgba(245, 148, 184, .5);
+            animation: bloom3 3s ease-in-out, glowing 2.5s ease-in-out infinite;
+            animation-fill-mode: forwards;
+        }
+
+        .petals>div:nth-child(4) {
+            z-index: 3;
+            background: #b81b43;
+            top: 213px;
+            height: 135px;
+            box-shadow: 0px 0px 60px rgba(245, 148, 184, .5);
+            animation: bloom4 3s ease-in-out, glowing 2.5s ease-in-out infinite;
+            animation-fill-mode: forwards;
+        }
+
+        .petals>div:nth-child(5) {
+            z-index: 2;
+            background: #b81b43;
+            top: 213px;
+            height: 135px;
+            box-shadow: 0px 0px 60px rgba(245, 148, 184, .5);
+            animation: bloom5 3s ease-in-out, glowing 2.5s ease-in-out infinite;
+            animation-fill-mode: forwards;
+        }
+
+        .petals>div:nth-child(6) {
+            z-index: 1;
+            background: #c9204b;
+            top: 200px;
+            height: 130px;
+            box-shadow: 0px 0px 60px rgba(245, 148, 184, .3);
+            animation: bloom6 3s ease-in-out, glowing 2.5s ease-in-out infinite;
+            animation-fill-mode: forwards;
+        }
+
+        .petals>div:nth-child(7) {
+            z-index: 0;
+            background: #c9204b;
+            top: 200px;
+            height: 130px;
+            box-shadow: 0px 0px 60px rgba(245, 148, 184, .3);
+            animation: bloom7 3s ease-in-out, glowing 2.5s ease-in-out infinite;
+            animation-fill-mode: forwards;
+        }
+
+        .deadPetals>div {
             position: absolute;
-            width: 2.5%; 
-            height: 60%;
+            background: #d52d58;
+            width: 20px;
+            height: 15px;
+            top: 200px;
+            border-radius: 0px 30px 0px 30px;
+            box-shadow: 0px 0px 30px rgba(245, 148, 184, .5);
+            transition: all 0.5s ease-out;
+        }
+
+        /* Corregimos las coordenadas absurdas y las reemplazamos por un inicio fuera de la vista (para que la animación funcione) */
+        .deadPetals>div:nth-child(1) {
+            left: -100px; 
+            transform: rotate(-30deg);
+            animation: falling 20s 4s ease-in-out infinite;
+        }
+
+        .deadPetals>div:nth-child(2) {
+            left: -150px;
+            transform: rotate(-30deg);
+            animation: falling 20s 8s ease-in-out infinite;
+        }
+
+        .deadPetals>div:nth-child(3) {
+            left: -200px;
+            transform: rotate(-30deg);
+            animation: falling 20s 12s ease-in-out infinite;
+        }
+
+        .deadPetals>div:nth-child(4) {
+            left: -250px;
+            transform: rotate(-30deg);
+            animation: falling 20s 16s ease-in-out infinite;
+        }
+
+        .leaves>div:nth-last-child(1) {
+            position: absolute;
+            width: 55px;
+            height: 30px;
+            background: #338f37;
+            top: 334px;
+            left: 278px;
+            border-radius: 100px;
+        }
+
+        .leaves>div:nth-child(1) {
+            position: absolute;
+            width: 15px;
+            height: 390px;
             background: #054c05;
-            top: 50%;
-            left: 48.75%; 
+            top: 308px;
+            left: 300px;
             border-radius: 0 0 100px 100px;
         }
 
-        /* Hojas laterales (posicionadas a los lados del tallo) */
         .leaves>div:nth-child(2) {
             position: absolute;
-            width: 10%;
-            height: 15%;
+            width: 60px;
+            height: 100px;
+            top: 53px;
             border-radius: 10px 80px 40px 80px;
             background: #054c05;
             transform-origin: bottom;
             transform: rotate(-30deg);
-            top: 65%;
-            left: 40%;
+            top: 412px;
+            left: 254px;
             box-shadow: inset 10px 10px #066406;
         }
 
         .leaves>div:nth-child(3) {
             position: absolute;
-            width: 10%;
-            height: 15%;
+            width: 60px;
+            height: 100px;
+            top: 53px;
             border-radius: 80px 1px 80px 40px;
             background: #054c05;
             transform-origin: bottom;
             transform: rotate(30deg);
-            top: 55%;
-            left: 50%;
+            top: 360px;
+            left: 300px;
             box-shadow: inset -10px 10px #066406;
         }
-        
-        /* OTRAS REGLAS... (espinas, pétalos cayendo, animaciones) */
-        /* Las mantengo para no introducir más errores, pero ahora escalan con el contenedor. */
 
-        /* Animaciones (ajustadas a porcentajes del contenedor para bloom2) */
+        .thorns>div {
+            position: absolute;
+            width: 0;
+            height: 0;
+            top: 200px;
+        }
+
+        .thorns>div:nth-child(odd) {
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 15px solid #054c05;
+            left: 315px;
+        }
+
+        .thorns>div:nth-child(even) {
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-right: 15px solid #054c05;
+            left: 285px;
+        }
+
+        .thorns>div:nth-child(1) {
+            top: 465px;
+        }
+
+        .thorns>div:nth-child(2) {
+            top: 390px;
+        }
+
+        .thorns>div:nth-child(4) {
+            top: 525px;
+        }
+
         @keyframes bloom2 {
             50% {
                 transform: rotate(-90deg);
-                top: 60%; 
-                left: 10%; 
+                top: 400px;
+                left: 150px;
             }
+
             100% {
                 transform: rotate(-60deg);
-                top: 90%; 
-                left: 5%; 
+                top: 615px;
+                left: 100px;
                 background: #71122a;
                 box-shadow: 0px 0px 0px rgba(245, 148, 184, 0);
             }
         }
-        
-        /* El resto de las animaciones se mantienen... */
 
-        /* El mensaje (Texto) */
-        .texto {
-            color: white;
-            font-size: 5vw; /* Sigue escalando bien */
-            position: relative; /* No fixed, para que no interfiera */
-            margin-top: 50px;
-            text-align: center;
-            padding: 0 10px;
-            z-index: 100;
+        @keyframes bloom3 {
+            100% {
+                transform: rotate(50deg);
+            }
         }
-        
+
+        @keyframes bloom4 {
+            100% {
+                transform: rotate(-25deg);
+            }
+        }
+
+        @keyframes bloom5 {
+            100% {
+                transform: rotate(25deg);
+            }
+        }
+
+        @keyframes bloom6 {
+            100% {
+                transform: rotate(-10deg);
+            }
+        }
+
+        @keyframes bloom7 {
+            100% {
+                transform: rotate(10deg);
+            }
+        }
+
+        @keyframes glowing {
+            50% {
+                background: #d7365f;
+                box-shadow: 0px 0px 60px rgba(245, 148, 184, 1);
+            }
+        }
+
+        @keyframes falling {
+            20% {
+                top: 335px;
+                background: #9d193b;
+                box-shadow: 0px 0px 0px rgba(245, 148, 184, 0);
+            }
+
+            100% {
+                top: 335px;
+                opacity: 0;
+            }
+        }
+
+        .texto {
+            /* Ajustamos la posición relativa al contenedor y centramos */
+            position: relative; 
+            top: 800px; /* Posicionado debajo del jarrón */
+            color: white;
+            font-size: 35px;
+            width: 100%;
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="glass">
-            <div class="shine"></div>
-        </div>
-        
-        <div class="flower-parts">
-             <div class="thorns">
+    <div class="scene-wrapper">
+        <div class="container">
+            <div class="glass">
+                <div class="shine"></div>
+            </div>
+            <div class="thorns">
                 <div></div>
                 <div></div>
                 <div></div>
@@ -238,13 +428,9 @@
                 <div></div>
             </div>
         </div>
+        <div>
+            <h4 class="texto">Mi amor por ti durará hasta que caiga el último pétalo ❤️</h4>
+        </div>
     </div>
-    
-    <div class="message">
-        <p class="texto">Mi amor por ti durará hasta que caiga el último pétalo ❤️</p>
-    </div>
-
-    <script></script>
 </body>
-
 </html>
